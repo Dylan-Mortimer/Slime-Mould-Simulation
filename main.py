@@ -14,10 +14,10 @@ from typing import Generator, Tuple
 import arcade
 from arcade.gl import BufferDescription
 
-WINDOW_WIDTH = 1080
-WINDOW_HEIGHT = 720
+WINDOW_WIDTH = 720
+WINDOW_HEIGHT = 480
 
-NUM_AGENTS: int = 6400
+NUM_AGENTS: int = 64000
 
 def gen_initial_data(
     screen_size: Tuple[int, int],

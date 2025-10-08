@@ -1,9 +1,9 @@
 #version 430
 layout(local_size_x = 8, local_size_y = 8) in;
-float agentScanAngle = radians(10);
-float agentTurnAngle = radians(1);
+float agentScanAngle = radians(15);
+float agentTurnAngle = radians(10);
 float agentTurnThreshold = 0.5;
-float decay = 0.0005;
+float decay = 0.0025;
 
 struct Agent { vec4 pos; vec4 vel; };
 
@@ -14,9 +14,9 @@ layout(rgba8, binding=0) uniform image2D img_output;
 void main() {
     uint i = gl_GlobalInvocationID.x;
     vec4 diffusePixel = vec4(0);
-    for (int i =-1; i < 2; ++i) {
+    for (int k =-1; k < 2; ++k) {
         for (int j = -1; j < 2; ++j) {
-            diffusePixel += 0.111 * imageLoad(img_output, ivec2(gl_GlobalInvocationID.xy + vec2(i, j)));
+            diffusePixel += 0.111 * imageLoad(img_output, ivec2(gl_GlobalInvocationID.xy + vec2(k, j)));
         }
     }
 
