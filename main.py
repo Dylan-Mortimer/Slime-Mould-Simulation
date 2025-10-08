@@ -17,7 +17,7 @@ from arcade.gl import BufferDescription
 WINDOW_WIDTH = 1080
 WINDOW_HEIGHT = 720
 
-NUM_AGENTS: int = 200
+NUM_AGENTS: int = 6400
 
 def gen_initial_data(
     screen_size: Tuple[int, int],
@@ -88,6 +88,14 @@ class SlimeMouldSimulationWindow(arcade.Window):
 
         self.group_x = (WINDOW_WIDTH + 7)//8
         self.group_y = (WINDOW_HEIGHT + 7)//8
+
+        self.compute_shader_defines = {
+            "NUM_AGENTS":NUM_AGENTS
+        }
+
+        # Preprocess the source by replacing each define with its value as a string
+        for templating_token, value in self.compute_shader_defines.items():
+            compute_shader_source = compute_shader_source.replace(templating_token, str(value))
 
         self.compute_shader = self.ctx.compute_shader(source=compute_shader_source)
 
