@@ -14,10 +14,10 @@ from typing import Generator, Tuple
 import arcade
 from arcade.gl import BufferDescription
 
-WINDOW_WIDTH = 720
-WINDOW_HEIGHT = 480
+WINDOW_WIDTH = 1080
+WINDOW_HEIGHT = 720
 
-NUM_AGENTS: int = 64000
+NUM_AGENTS: int = 131072
 
 def gen_initial_data(
     screen_size: Tuple[int, int],
@@ -55,7 +55,7 @@ class SlimeMouldSimulationWindow(arcade.Window):
         
         self.center_window()
 
-        initial_data = gen_initial_data(self.get_size())
+        initial_data = gen_initial_data([WINDOW_WIDTH, WINDOW_HEIGHT])
         self.ssbo_previous = self.ctx.buffer(data=initial_data)
         self.ssbo_current = self.ctx.buffer(data=initial_data)
 
@@ -86,8 +86,8 @@ class SlimeMouldSimulationWindow(arcade.Window):
 
         compute_shader_source = Path(r'C:\Users\mortd\VS Code\Python\Slime Mould Simulation\Shaders\compute_shader.glsl').read_text()
 
-        self.group_x = (WINDOW_WIDTH + 7)//8
-        self.group_y = (WINDOW_HEIGHT + 7)//8
+        self.group_x = WINDOW_WIDTH
+        self.group_y = WINDOW_HEIGHT
 
         self.compute_shader_defines = {
             "NUM_AGENTS":NUM_AGENTS
