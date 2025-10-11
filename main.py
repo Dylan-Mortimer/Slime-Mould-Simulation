@@ -67,9 +67,11 @@ class SlimeMouldSimulationWindow(arcade.Window):
 
         vertices = array("f", [
             -1.0, -1.0,
-            1.0,  1.0,
+            1.0,  -1.0,
             -1.0,  1.0,
-            1.0, -1.0
+            -1.0, 1.0,
+            1.0, -1.0,
+            1.0, 1.0
         ])
 
         vbo = self.ctx.buffer(data=vertices)
