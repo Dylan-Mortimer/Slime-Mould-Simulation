@@ -67,24 +67,26 @@ class SlimeMouldSimulationWindow(arcade.Window):
 
         vertices = array("f", [
             -1.0, -1.0,
-            1.0,  1.0,
+            1.0,  -1.0,
             -1.0,  1.0,
-            1.0, -1.0
+            -1.0, 1.0,
+            1.0, -1.0,
+            1.0, 1.0
         ])
 
         vbo = self.ctx.buffer(data=vertices)
 
         self.quad = self.ctx.geometry([BufferDescription(vbo, "2f", ["in_vert"])])
 
-        vertex_shader_source = Path(r"C:\Users\mortd\VS Code\Python\Slime Mould Simulation\Shaders\vertex_shader.glsl").read_text()
-        fragment_shader_source = Path(r"C:\Users\mortd\VS Code\Python\Slime Mould Simulation\Shaders\fragment_shader.glsl").read_text()
+        vertex_shader_source = Path(Path(__file__).resolve().parent/"Shaders/vertex_shader.glsl").read_text()
+        fragment_shader_source = Path(Path(__file__).resolve().parent/"Shaders/fragment_shader.glsl").read_text()
 
         self.program = self.ctx.program(
             vertex_shader=vertex_shader_source,
             fragment_shader=fragment_shader_source,
         )
 
-        compute_shader_source = Path(r'C:\Users\mortd\VS Code\Python\Slime Mould Simulation\Shaders\compute_shader.glsl').read_text()
+        compute_shader_source = Path(Path(__file__).resolve().parent/"Shaders/compute_shader.glsl").read_text()
 
         self.group_x = WINDOW_WIDTH
         self.group_y = WINDOW_HEIGHT
