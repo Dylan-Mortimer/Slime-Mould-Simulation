@@ -1,6 +1,6 @@
 #version 430
 layout(local_size_x = 8, local_size_y = 8) in;
-float agentScanAngle = radians(10);
+float agentScanAngle = radians(5);
 float agentTurnAngle = radians(5);
 float agentTurnThreshold = 0.5;
 float decay = 0.0025;
