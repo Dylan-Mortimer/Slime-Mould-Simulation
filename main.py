@@ -17,7 +17,7 @@ from arcade.gl import BufferDescription
 WINDOW_WIDTH = 1080
 WINDOW_HEIGHT = 720
 
-NUM_AGENTS: int = 131072
+NUM_AGENTS: int = pow(2,18)
 
 def gen_initial_data(
     screen_size: Tuple[int, int],
@@ -31,15 +31,11 @@ def gen_initial_data(
             #Position
             yield random.randrange(0,width)
             yield random.randrange(0,height)
-            yield 0.0
-            yield 6.0
-
             #Velocity
             angle = random.random()*2*math.pi
             yield math.cos(angle)
             yield math.sin(angle)
-            yield 0.0
-            yield 0.0
+
 
     return array('f', _data_generator())
 
@@ -50,7 +46,8 @@ class SlimeMouldSimulationWindow(arcade.Window):
             WINDOW_WIDTH, WINDOW_HEIGHT,
             "Slime Mould Simulation",
             gl_version=(4,3),
-            resizable=False
+            resizable=False,
+            fullscreen=True
         )
         
         self.center_window()

@@ -5,7 +5,7 @@ float agentTurnAngle = radians(5);
 float agentTurnThreshold = 0.5;
 float decay = 0.0025;
 
-struct Agent { vec4 pos; vec4 vel; };
+struct Agent { vec4 posVel; };
 
 layout(std430, binding=0) buffer agents_in  { Agent agents[]; } In;
 layout(std430, binding=1) buffer agents_out { Agent agents[]; } Out;
@@ -30,8 +30,8 @@ void main() {
     if (i >= NUM_AGENTSu) return;
 
     Agent a = In.agents[i];
-    vec4 p = a.pos;
-    vec4 v = a.vel;
+    vec2 p = a.posVel.xy;
+    vec2 v = a.posVel.zw;
 
     vec2 size = imageSize(img_output);
 
@@ -49,7 +49,7 @@ void main() {
     float angle = atan(v.y, v.x);
 
     // Check pheromone trail front-left
-    vec4 simV = v;
+    vec2 simV = v;
     simV.x = cos(angle - agentScanAngle);
     simV.y = sin(angle) - agentScanAngle;
     vec4 leftPix = imageLoad(img_output, ivec2(p.xy + (simV.xy * 30)));
@@ -60,12 +60,14 @@ void main() {
     simV.y = sin(angle + agentScanAngle);
     vec4 rightPix = imageLoad(img_output, ivec2(p.xy + (simV.xy * 30)));
 
-    v.x = cos((angle + (rightPix.x - leftPix.x) * agentTurnAngle));
-    v.y = sin((angle + (rightPix.x - leftPix.x) * agentTurnAngle));
+    float rand = hash(v.xy * p.xy, gl_GlobalInvocationID.x * gl_GlobalInvocationID.y);
+
+    v.x = cos((angle + (rightPix.x - leftPix.x) * agentTurnAngle + (rand) * 0.1));
+    v.y = sin((angle + (rightPix.x - leftPix.x) * agentTurnAngle + (rand) * 0.1));
 
     imageStore(img_output, ivec2(clamp(p.xy, vec2(0), vec2(size) - 1)), vec4(1));
 
-    a.pos = p;
-    a.vel = v;
+    a.posVel.xy = p;
+    a.posVel.zw = v;
     Out.agents[i] = a;
 }
