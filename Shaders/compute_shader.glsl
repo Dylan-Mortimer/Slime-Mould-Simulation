@@ -17,6 +17,21 @@ float hash(in vec2 xy, in float seed){
        return fract(tan(distance(xy*PHI, xy)*seed)*xy.x);
 }
 
+bool checkWithinCircle(vec2 p) {
+
+    float dx = abs((p.x-1080.0/2.0));
+    float dy = abs((p.y-720.0/2.0));
+    float radius = 720.0/2.0;
+    bool withinCircle = false;
+
+    if (dx*dx + dy*dy >= radius*radius) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
 void main() {
     uint i = gl_GlobalInvocationID.x;
     vec4 diffusePixel = vec4(0);
@@ -35,14 +50,11 @@ void main() {
 
     vec2 size = imageSize(img_output);
 
-    if (p.x < 0.0 || p.x > size.x) {
-        p.x = clamp(p.x, 0.0, size.x);
+    if (checkWithinCircle(p.xy) == true) {
         v.x *= -1;
-    }
-    if (p.y < 0.0 || p.y > size.y) {
-        p.y = clamp(p.y, 0.0, size.y);
         v.y *= -1;
     }
+
 
     p.xy += v.xy;
 
@@ -62,8 +74,9 @@ void main() {
 
     float rand = hash(v.xy * p.xy, gl_GlobalInvocationID.x * gl_GlobalInvocationID.y);
 
-    v.x = cos((angle + (rightPix.x - leftPix.x) * agentTurnAngle + (rand) * 0.1));
-    v.y = sin((angle + (rightPix.x - leftPix.x) * agentTurnAngle + (rand) * 0.1));
+    float newAngle = (angle + (rightPix.x - leftPix.x) * agentTurnAngle + (rand) * 0.1);
+    v.x = cos(newAngle);
+    v.y = sin(newAngle);
 
     imageStore(img_output, ivec2(clamp(p.xy, vec2(0), vec2(size) - 1)), vec4(1));
 

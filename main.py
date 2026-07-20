@@ -29,8 +29,14 @@ def gen_initial_data(
 
         for i in range(num_agents):
             #Position
-            yield random.randrange(0,width)
-            yield random.randrange(0,height)
+            # r = 720/2 * math.sqrt(random.random())
+            # theta = random.random() * 2 * math.pi
+
+            # yield (1080/2 + r * math.cos(theta))
+            # yield (720/2 + r * math.sin(theta))
+
+            yield 1080/2
+            yield 720/2
             #Velocity
             angle = random.random()*2*math.pi
             yield math.cos(angle)
