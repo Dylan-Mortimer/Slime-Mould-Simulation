@@ -122,7 +122,9 @@ class SlimeMouldSimulationWindow(arcade.Window):
 
         self.ssbo_previous, self.ssbo_current = self.ssbo_current, self.ssbo_previous
 
-
+    def on_key_press(self, key, modifiers):
+        if key == arcade.key.ESCAPE:
+            self.close()
 
 
 if __name__ == "__main__":

@@ -41,6 +41,8 @@ void main() {
         }
     }
 
+
+
     imageStore(img_output, ivec2(gl_GlobalInvocationID.xy), diffusePixel - vec4(decay));
     if (i >= NUM_AGENTSu) return;
 
@@ -78,7 +80,14 @@ void main() {
     v.x = cos(newAngle);
     v.y = sin(newAngle);
 
-    imageStore(img_output, ivec2(clamp(p.xy, vec2(0), vec2(size) - 1)), vec4(1));
+    float hue = v.x * v.y;
+    vec3 color = vec3(
+      sin(hue * 6.238) * 0.5 + 0.5,
+      sin(hue * 6.238 + 2.094) * 0.5 + 0.5,
+      sin(hue * 6.238 + 4.188) * 0.5 + 0.5
+    );
+
+    imageStore(img_output, ivec2(clamp(p.xy, vec2(0), vec2(size) - 1)), vec4(color, 1.0));
 
     a.posVel.xy = p;
     a.posVel.zw = v;
